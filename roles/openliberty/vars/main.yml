@@ -1,0 +1,8 @@
+---
+# vars file for openliberty
+# https://public.dhe.ibm.com/ibmdl/export/pub/software/openliberty/runtime/release/2021-02-09_1100/openliberty-21.0.0.2.zip
+openliberty_package_name: "openliberty-{{ openliberty_version }}"
+openliberty_package: "{{ openliberty_package_name }}.zip"
+openliberty_url: "https://public.dhe.ibm.com/ibmdl/export/pub/software/openliberty/runtime/release/{{ openliberty_release }}/{{ openliberty_package }}"
+openliberty_runtime_home: "{{ openliberty_home }}/runtime"
+openliberty_folder_after_unarchive: "wlp"

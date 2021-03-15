@@ -1,0 +1,9 @@
+---
+- name: "(Re-)install Wildfly server"
+  hosts: localhost
+  connection: local
+  tags:
+    - "wildfly"
+    - "reinstall-wildfly"
+  roles:
+    - wildfly

@@ -1,0 +1,9 @@
+---
+- name: "(Re-)install Payara server"
+  hosts: localhost
+  connection: local
+  tags:
+    - "payara"
+    - "reinstall-payara"
+  roles:
+    - payara

@@ -1,0 +1,2 @@
+
+wildfly_home: "{{  ansible_env.HOME }}/jee-runtimes/wildfly"

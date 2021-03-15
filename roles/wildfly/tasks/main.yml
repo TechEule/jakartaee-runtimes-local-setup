@@ -1,0 +1,62 @@
+---
+# tasks file for wildfly
+- name: "Create a directory {{wildfly_home}}"
+  ansible.builtin.file:
+    path: "{{wildfly_home}}"
+    state: directory
+    recurse: yes
+
+- name: "Check if {{ wildfly_package }} exists"
+  stat:
+    path: "{{wildfly_home}}/{{wildfly_package}}"
+  register: wildfly_package_stat
+
+- name: "The {{ wildfly_package }} exists result"
+  debug:
+    msg: "The {{ wildfly_package }} does{{ (wildfly_package_stat.stat.exists and wildfly_package_stat.stat.isreg) | ternary('', ' not') }} exists at location {{wildfly_home}}/{{wildfly_package}}"
+#  when: wildfly_package_stat.stat.exists and wildfly_package_stat.stat.isreg
+
+- name: "Download {{ wildfly_package }} from {{ wildfly_url }}"
+  get_url:
+    url: "{{ wildfly_url }}"
+    dest: "{{wildfly_home}}/{{wildfly_package}}"
+    checksum: "{{ wildfly_checksum }}"
+  when: not (wildfly_package_stat.stat.exists and wildfly_package_stat.stat.isreg)
+
+- name: "Check if '{{wildfly_home}}/{{ wildfly_package_name }}' exists"
+  stat:
+    path: "{{wildfly_home}}/{{ wildfly_package_name }}"
+  register: wildfly_package_name_stat
+
+- name: "Remove existing folder at '{{wildfly_home}}/{{ wildfly_package_name }}'"
+  ansible.builtin.file:
+    path: "{{wildfly_home}}/{{ wildfly_package_name }}"
+    state: absent
+
+  when: wildfly_package_name_stat.stat.exists
+
+- name: "Check if {{ wildfly_runtime_home }} exists"
+  stat:
+    path: "{{ wildfly_runtime_home }}"
+  register: wildfly_runtime_home_stat
+
+- name: "Remove existing wildfly_runtime_home folder at {{ wildfly_runtime_home }}"
+  ansible.builtin.file:
+    path: "{{ wildfly_runtime_home }}"
+    state: absent
+  when: wildfly_runtime_home_stat.stat.exists
+
+- name: Unarchive a file that is already on the remote machine
+  ansible.builtin.unarchive:
+    src: "{{wildfly_home}}/{{ wildfly_package }}"
+    dest: "{{ wildfly_home }}"
+    remote_src: yes
+
+#- name: "Copy {{ wildfly_runtime_home }}"
+#  copy:
+#    src: "{{wildfly_home}}/{{ wildfly_package_name }}/"
+#    dest: "{{ wildfly_runtime_home }}"
+#    remote_src: yes
+
+- name: "Move {{ wildfly_runtime_home }}"
+  raw: "mv {{wildfly_home}}/{{ wildfly_package_name }} {{ wildfly_runtime_home }}"

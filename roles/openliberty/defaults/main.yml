@@ -1,0 +1,6 @@
+---
+# defaults file for openliberty
+openliberty_release: "2021-02-09_1100"
+openliberty_version: "21.0.0.2"
+openliberty_checksum: "sha512:8b5c635e34c335eb70f7c9d969011e88da19caa925b143bd8992085b2b31addfdfc4ec4ab138fe6471a3887e674ac7d6a6eb1aa4f0e8bfb860f036e2c30f1e15"
+openliberty_home: "{{ ansible_env.HOME }}/jee-runtimes/openliberty"

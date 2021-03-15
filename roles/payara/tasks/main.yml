@@ -1,0 +1,59 @@
+---
+# tasks file for payara
+- name: "Create a directory {{payara_home}}"
+  ansible.builtin.file:
+    path: "{{payara_home}}"
+    state: directory
+    recurse: yes
+
+- name: "Check if {{ payara_package }} exists"
+  stat:
+    path: "{{payara_home}}/{{payara_package}}"
+  register: payara_package_stat
+
+- name: "The {{ payara_package }} exists result"
+  debug:
+    msg: "The {{ payara_package }} does{{ (payara_package_stat.stat.exists and payara_package_stat.stat.isreg) | ternary('', ' not') }} exists at location {{payara_home}}/{{payara_package}}"
+#  when: payara_package_stat.stat.exists and payara_package_stat.stat.isreg
+
+- name: "Download {{ payara_package }} from {{ payara_url }}"
+  get_url:
+    url: "{{ payara_url }}"
+    dest: "{{payara_home}}/{{payara_package}}"
+    checksum: "{{ payara_checksum }}"
+  when: not (payara_package_stat.stat.exists and payara_package_stat.stat.isreg)
+
+- name: "Check if '{{payara_home}}/{{ payara_package_name }}' exists"
+  stat:
+    path: "{{payara_home}}/{{ payara_package_name }}"
+  register: payara_package_name_stat
+
+- name: "Remove existing folder at '{{payara_home}}/{{ payara_package_name }}'"
+  ansible.builtin.file:
+    path: "{{payara_home}}/{{ payara_package_name }}"
+    state: absent
+
+  when: payara_package_name_stat.stat.exists
+
+- name: "Check if {{ payara_runtime_home }} exists"
+  stat:
+    path: "{{ payara_runtime_home }}"
+  register: payara_runtime_home_stat
+
+- name: "Remove existing payara_runtime_home folder at {{ payara_runtime_home }}"
+  ansible.builtin.file:
+    path: "{{ payara_runtime_home }}"
+    state: absent
+  when: payara_runtime_home_stat.stat.exists
+
+- name: Unarchive a file that is already on the remote machine
+  ansible.builtin.unarchive:
+    src: "{{payara_home}}/{{ payara_package }}"
+    dest: "{{ payara_home }}"
+    remote_src: yes
+
+- name: "Move {{ payara_runtime_home }}"
+  raw: "mv {{payara_home}}/{{ payara_folder_after_unarchive }} {{ payara_runtime_home }}"
+
+#- name: "Create defaultServer"
+#  raw: "{{ payara_runtime_home }}/bin/server create defaultServer"

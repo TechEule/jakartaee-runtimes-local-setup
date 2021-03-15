@@ -1,0 +1,5 @@
+---
+# defaults file for wildfly
+wildfly_version: "23.0.0.Final"
+wildfly_checksum: "sha1:83e165f34eb85d593117aa51bb4a24ceb6ce8a53"
+wildfly_home: "{{ ansible_env.HOME }}/jee-runtimes/wildfly"

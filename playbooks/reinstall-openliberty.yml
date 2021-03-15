@@ -1,0 +1,9 @@
+---
+- name: "(Re-)install Openliberty server"
+  hosts: localhost
+  connection: local
+  tags:
+    - "openliberty"
+    - "reinstall-openliberty"
+  roles:
+    - openliberty

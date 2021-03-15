@@ -1,0 +1,59 @@
+---
+# tasks file for openliberty
+- name: "Create a directory {{openliberty_home}}"
+  ansible.builtin.file:
+    path: "{{openliberty_home}}"
+    state: directory
+    recurse: yes
+
+- name: "Check if {{ openliberty_package }} exists"
+  stat:
+    path: "{{openliberty_home}}/{{openliberty_package}}"
+  register: openliberty_package_stat
+
+- name: "The {{ openliberty_package }} exists result"
+  debug:
+    msg: "The {{ openliberty_package }} does{{ (openliberty_package_stat.stat.exists and openliberty_package_stat.stat.isreg) | ternary('', ' not') }} exists at location {{openliberty_home}}/{{openliberty_package}}"
+#  when: openliberty_package_stat.stat.exists and openliberty_package_stat.stat.isreg
+
+- name: "Download {{ openliberty_package }} from {{ openliberty_url }}"
+  get_url:
+    url: "{{ openliberty_url }}"
+    dest: "{{openliberty_home}}/{{openliberty_package}}"
+    checksum: "{{ openliberty_checksum }}"
+  when: not (openliberty_package_stat.stat.exists and openliberty_package_stat.stat.isreg)
+
+- name: "Check if '{{openliberty_home}}/{{ openliberty_package_name }}' exists"
+  stat:
+    path: "{{openliberty_home}}/{{ openliberty_package_name }}"
+  register: openliberty_package_name_stat
+
+- name: "Remove existing folder at '{{openliberty_home}}/{{ openliberty_package_name }}'"
+  ansible.builtin.file:
+    path: "{{openliberty_home}}/{{ openliberty_package_name }}"
+    state: absent
+
+  when: openliberty_package_name_stat.stat.exists
+
+- name: "Check if {{ openliberty_runtime_home }} exists"
+  stat:
+    path: "{{ openliberty_runtime_home }}"
+  register: openliberty_runtime_home_stat
+
+- name: "Remove existing openliberty_runtime_home folder at {{ openliberty_runtime_home }}"
+  ansible.builtin.file:
+    path: "{{ openliberty_runtime_home }}"
+    state: absent
+  when: openliberty_runtime_home_stat.stat.exists
+
+- name: Unarchive a file that is already on the remote machine
+  ansible.builtin.unarchive:
+    src: "{{openliberty_home}}/{{ openliberty_package }}"
+    dest: "{{ openliberty_home }}"
+    remote_src: yes
+
+- name: "Move {{ openliberty_runtime_home }}"
+  raw: "mv {{openliberty_home}}/{{ openliberty_folder_after_unarchive }} {{ openliberty_runtime_home }}"
+
+- name: "Create defaultServer"
+  raw: "{{ openliberty_runtime_home }}/bin/server create defaultServer"
