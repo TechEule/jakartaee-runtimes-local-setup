@@ -1,0 +1,11 @@
+---
+# defaults file for tomee
+tomee_version: "8.0.6"
+tomee_checksum: "sha512:30bd25bd91d8cfb06202ed566157262ccccdb9334614e81daf6a2bb35258bb418288c9ad20b395da739844d2131d485050d579774c43755ba5adffdbc9deeee0"
+tomee_home: "{{ ansible_env.HOME }}/jee-runtimes/tomee"
+tomee_package_name: "apache-tomee-{{ tomee_version }}-plume"
+tomee_package: "{{ tomee_package_name }}.zip"
+# https://artfiles.org/apache.org/tomee/tomee-8.0.6/apache-tomee-8.0.6-plume.zip
+tomee_url: "https://artfiles.org/apache.org/tomee/tomee-{{ tomee_version }}/{{ tomee_package }}"
+tomee_runtime_home: "{{ tomee_home }}/runtime"
+tomee_folder_after_unarchive: "apache-tomee-plume-{{ tomee_version }}"

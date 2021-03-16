@@ -1,0 +1,60 @@
+---
+# tasks file for tomee
+
+- name: "Create a directory {{tomee_home}}"
+  ansible.builtin.file:
+    path: "{{tomee_home}}"
+    state: directory
+    recurse: yes
+
+- name: "Check if {{ tomee_package }} exists"
+  stat:
+    path: "{{tomee_home}}/{{tomee_package}}"
+  register: tomee_package_stat
+
+- name: "The {{ tomee_package }} exists result"
+  debug:
+    msg: "The {{ tomee_package }} does{{ (tomee_package_stat.stat.exists and tomee_package_stat.stat.isreg) | ternary('', ' not') }} exists at location {{tomee_home}}/{{tomee_package}}"
+#  when: tomee_package_stat.stat.exists and tomee_package_stat.stat.isreg
+
+- name: "Download {{ tomee_package }} from {{ tomee_url }}"
+  get_url:
+    url: "{{ tomee_url }}"
+    dest: "{{tomee_home}}/{{tomee_package}}"
+    checksum: "{{ tomee_checksum }}"
+  when: not (tomee_package_stat.stat.exists and tomee_package_stat.stat.isreg)
+
+- name: "Check if '{{tomee_home}}/{{ tomee_package_name }}' exists"
+  stat:
+    path: "{{tomee_home}}/{{ tomee_package_name }}"
+  register: tomee_package_name_stat
+
+- name: "Remove existing folder at '{{tomee_home}}/{{ tomee_package_name }}'"
+  ansible.builtin.file:
+    path: "{{tomee_home}}/{{ tomee_package_name }}"
+    state: absent
+
+  when: tomee_package_name_stat.stat.exists
+
+- name: "Check if {{ tomee_runtime_home }} exists"
+  stat:
+    path: "{{ tomee_runtime_home }}"
+  register: tomee_runtime_home_stat
+
+- name: "Remove existing tomee_runtime_home folder at {{ tomee_runtime_home }}"
+  ansible.builtin.file:
+    path: "{{ tomee_runtime_home }}"
+    state: absent
+  when: tomee_runtime_home_stat.stat.exists
+
+- name: Unarchive a file that is already on the remote machine
+  ansible.builtin.unarchive:
+    src: "{{tomee_home}}/{{ tomee_package }}"
+    dest: "{{ tomee_home }}"
+    remote_src: yes
+
+- name: "Move {{ tomee_runtime_home }}"
+  raw: "mv {{tomee_home}}/{{ tomee_folder_after_unarchive }} {{ tomee_runtime_home }}"
+
+#- name: "Create defaultServer"
+#  raw: "{{ tomee_runtime_home }}/bin/server create defaultServer"

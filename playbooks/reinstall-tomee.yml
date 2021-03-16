@@ -1,0 +1,9 @@
+---
+- name: "(Re-)install TomEE server"
+  hosts: localhost
+  connection: local
+  tags:
+    - "tomee"
+    - "reinstall-tomee"
+  roles:
+    - tomee

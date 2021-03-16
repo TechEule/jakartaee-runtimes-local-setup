@@ -3,3 +3,4 @@
 - import_playbook: playbooks/reinstall-wildfly.yml
 - import_playbook: playbooks/reinstall-openliberty.yml
 - import_playbook: playbooks/reinstall-payara.yml
+- import_playbook: playbooks/reinstall-tomee.yml

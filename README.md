@@ -1,4 +1,11 @@
-# TechEule - Ansible local setup for Jakarta EE /Java EE runtimes
+# TechEule - Ansible local setup for Jakarta EE (Java EE) runtimes (Servers)
+
+## Supported Runtimes
+
+* [Open Liberty](https://openliberty.io/)
+* [Payara](https://www.payara.fish/)
+* [TomEE](http://tomee.apache.org/)
+* [Wildfly](https://www.wildfly.org/)
 
 ## Requirements
 
@@ -29,4 +36,10 @@ ansible-playbook -i ./inventories/localhost main.yml --tags 'payara'
 
 ```shell
 ansible-playbook -i ./inventories/localhost main.yml --tags 'wildfly'  
+```
+
+### Install only runtime TomEE
+
+```shell
+ansible-playbook -i inventories/localhost main.yml --tags 'tomee'
 ```
