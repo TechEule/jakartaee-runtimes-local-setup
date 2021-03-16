@@ -6,6 +6,7 @@
 * [Payara](https://www.payara.fish/)
 * [TomEE](http://tomee.apache.org/)
 * [Wildfly](https://www.wildfly.org/)
+* [Keycloak](https://www.keycloak.org/)
 
 ## Requirements
 
@@ -42,4 +43,10 @@ ansible-playbook -i ./inventories/localhost main.yml --tags 'wildfly'
 
 ```shell
 ansible-playbook -i inventories/localhost main.yml --tags 'tomee'
+```
+
+### Install only runtime Keycloak
+
+```shell
+ansible-playbook -i ./inventories/localhost main.yml --tags 'keycloak'  
 ```

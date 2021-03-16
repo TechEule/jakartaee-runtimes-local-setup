@@ -1,0 +1,9 @@
+---
+- name: "(Re-)install Keycloak server"
+  hosts: localhost
+  connection: local
+  tags:
+    - "keycloak"
+    - "reinstall-keycloak"
+  roles:
+    - keycloak

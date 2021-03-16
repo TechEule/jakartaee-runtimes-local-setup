@@ -4,3 +4,4 @@
 - import_playbook: playbooks/reinstall-openliberty.yml
 - import_playbook: playbooks/reinstall-payara.yml
 - import_playbook: playbooks/reinstall-tomee.yml
+- import_playbook: playbooks/reinstall-keycloak.yml

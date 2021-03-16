@@ -1,7 +1,2 @@
 ---
 # vars file for wildfly
-#             https://download.jboss.org/wildfly/23.0.0.Final/wildfly-23.0.0.Final.zip
-wildfly_package_name: "wildfly-{{ wildfly_version }}"
-wildfly_package: "{{ wildfly_package_name }}.zip"
-wildfly_url: "http://download.jboss.org/wildfly/{{ wildfly_version }}/{{ wildfly_package }}"
-wildfly_runtime_home: "{{ wildfly_home }}/runtime"

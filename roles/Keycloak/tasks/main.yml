@@ -1,0 +1,62 @@
+---
+# tasks file for keycloak
+- name: "Create a directory {{keycloak_home}}"
+  ansible.builtin.file:
+    path: "{{keycloak_home}}"
+    state: directory
+    recurse: yes
+
+- name: "Check if {{ keycloak_package }} exists"
+  stat:
+    path: "{{keycloak_home}}/{{keycloak_package}}"
+  register: keycloak_package_stat
+
+- name: "The {{ keycloak_package }} exists result"
+  debug:
+    msg: "The {{ keycloak_package }} does{{ (keycloak_package_stat.stat.exists and keycloak_package_stat.stat.isreg) | ternary('', ' not') }} exists at location {{keycloak_home}}/{{keycloak_package}}"
+#  when: keycloak_package_stat.stat.exists and keycloak_package_stat.stat.isreg
+
+- name: "Download {{ keycloak_package }} from {{ keycloak_url }}"
+  get_url:
+    url: "{{ keycloak_url }}"
+    dest: "{{keycloak_home}}/{{keycloak_package}}"
+    checksum: "{{ keycloak_checksum }}"
+  when: not (keycloak_package_stat.stat.exists and keycloak_package_stat.stat.isreg)
+
+- name: "Check if '{{keycloak_home}}/{{ keycloak_package_name }}' exists"
+  stat:
+    path: "{{keycloak_home}}/{{ keycloak_package_name }}"
+  register: keycloak_package_name_stat
+
+- name: "Remove existing folder at '{{keycloak_home}}/{{ keycloak_package_name }}'"
+  ansible.builtin.file:
+    path: "{{keycloak_home}}/{{ keycloak_package_name }}"
+    state: absent
+
+  when: keycloak_package_name_stat.stat.exists
+
+- name: "Check if {{ keycloak_runtime_home }} exists"
+  stat:
+    path: "{{ keycloak_runtime_home }}"
+  register: keycloak_runtime_home_stat
+
+- name: "Remove existing keycloak_runtime_home folder at {{ keycloak_runtime_home }}"
+  ansible.builtin.file:
+    path: "{{ keycloak_runtime_home }}"
+    state: absent
+  when: keycloak_runtime_home_stat.stat.exists
+
+- name: Unarchive a file that is already on the remote machine
+  ansible.builtin.unarchive:
+    src: "{{keycloak_home}}/{{ keycloak_package }}"
+    dest: "{{ keycloak_home }}"
+    remote_src: yes
+
+#- name: "Copy {{ keycloak_runtime_home }}"
+#  copy:
+#    src: "{{keycloak_home}}/{{ keycloak_package_name }}/"
+#    dest: "{{ keycloak_runtime_home }}"
+#    remote_src: yes
+
+- name: "Move {{ keycloak_runtime_home }}"
+  raw: "mv {{keycloak_home}}/{{ keycloak_package_name }} {{ keycloak_runtime_home }}"
