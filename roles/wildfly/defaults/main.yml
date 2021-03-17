@@ -2,7 +2,8 @@
 # defaults file for wildfly
 wildfly_version: "23.0.0.Final"
 wildfly_checksum: "sha1:83e165f34eb85d593117aa51bb4a24ceb6ce8a53"
-wildfly_home: "{{ ansible_env.HOME }}/jee-runtimes/wildfly"
+jee_runtimes_home: "{{ ansible_env.HOME }}/jee-runtimes"
+wildfly_home: "{{ jee_runtimes_home }}/wildfly"
 # https://download.jboss.org/wildfly/23.0.0.Final/wildfly-23.0.0.Final.zip
 wildfly_package_name: "wildfly-{{ wildfly_version }}"
 wildfly_package: "{{ wildfly_package_name }}.zip"

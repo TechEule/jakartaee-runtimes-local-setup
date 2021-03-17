@@ -2,7 +2,8 @@
 # defaults file for keycloak
 keycloak_version: "12.0.4"
 keycloak_checksum: "sha1:076bc54606cb3f2856e1ad0c10d7b3f2e887fbf2"
-keycloak_home: "{{ ansible_env.HOME }}/jee-runtimes/keycloak"
+jee_runtimes_home: "{{ ansible_env.HOME }}/jee-runtimes"
+keycloak_home: "{{ jee_runtimes_home }}/keycloak"
 # https://github.com/keycloak/keycloak/releases/download/12.0.4/keycloak-12.0.4.zip
 keycloak_package_name: "keycloak-{{ keycloak_version }}"
 keycloak_package: "{{ keycloak_package_name }}.zip"

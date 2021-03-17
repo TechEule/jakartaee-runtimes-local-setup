@@ -2,7 +2,8 @@
 # defaults file for payara
 payara_version: "5.2021.1"
 payara_checksum: "sha512:74d990937be206a0dd90cd6c021e9569a9e712f6d954e6e5b364afb500fcaf535e270f7d3505c892dd19ce7969aae0c511b00b585e7c2c05f9d94dcb2d2237e1"
-payara_home: "{{ ansible_env.HOME }}/jee-runtimes/payara"
+jee_runtimes_home: "{{ ansible_env.HOME }}/jee-runtimes"
+payara_home: "{{ jee_runtimes_home }}/payara"
 payara_package_name: "payara-{{ payara_version }}"
 payara_package: "{{ payara_package_name }}.zip"
 # https://s3-eu-west-1.amazonaws.com/payara.fish/Payara+Downloads/5.2021.1/payara-5.2021.1.zip

@@ -57,3 +57,8 @@
 
 - name: "Create defaultServer"
   raw: "{{ openliberty_runtime_home }}/bin/server create defaultServer"
+
+- name: "Configure Open Liberty ({{ openliberty_runtime_home }}/usr/servers/defaultServer/server.xml)"
+  ansible.builtin.template:
+    src: server.xml
+    dest: "{{ openliberty_runtime_home }}/usr/servers/defaultServer/server.xml"
