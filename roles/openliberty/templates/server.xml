@@ -5,7 +5,6 @@
     <featureManager>
         <feature>jakartaee-8.0</feature>
         <feature>microProfile-3.3</feature>
-        <!-- <feature>microProfile-3.3</feature> -->
         <feature>localConnector-1.0</feature>
     </featureManager>
 
@@ -18,7 +17,19 @@
         <user name="admin" password="admin" /> 
     </basicRegistry>
     -->
-    
+    <library id="jdbcLib">
+        <fileset dir="/usr/local/loc-lib-soft/jdbc" includes="postgresql-42.2.20.jar"/>
+      </library>
+  
+    <dataSource id="DefaultDataSource">
+      <jdbcDriver libraryRef="jdbcLib"/>
+      <properties serverName="localhost" 
+                  portNumber="15432"
+                  databaseName="boc-db-name"
+                  user="boc-user" 
+                  password="boc-password"/>
+    </dataSource>
+      
     <quickStartSecurity userName="admin" userPassword="admin"/>
 
     <httpEndpoint id="defaultHttpEndpoint"

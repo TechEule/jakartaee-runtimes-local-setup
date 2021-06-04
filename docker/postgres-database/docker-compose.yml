@@ -1,0 +1,24 @@
+version: "3.1"
+
+services:
+  db:
+    image: postgres:13
+    restart: always
+    environment:
+      POSTGRES_USER: boc-user
+      POSTGRES_PASSWORD: boc-password
+      POSTGRES_DB: boc-db-name
+    volumes: 
+      - "./datadir:/var/lib/postgresql/data"
+    ports:
+      - "15432:5432"
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 18080:8080
+
+# (cd /Users/wassim/tools/boc-tools/docker/postgres-database && docker compose -f docker-compose.yml up -d)
+# (cd /Users/wassim/tools/boc-tools/docker/postgres-database && docker compose -f docker-compose.yml down)
+# (cd /Users/wassim/tools/boc-tools/docker/postgres-database && docker compose -f docker-compose.yml down ; rm -rf )
