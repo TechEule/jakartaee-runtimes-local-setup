@@ -6,6 +6,7 @@
         <feature>jakartaee-8.0</feature>
         <feature>microProfile-3.3</feature>
         <feature>localConnector-1.0</feature>
+        <feature>jpa-2.2</feature>
     </featureManager>
 
     <!--For a user registry configuration, configure your user registry. For example, configure a basic user registry using the
@@ -21,7 +22,7 @@
         <fileset dir="/usr/local/loc-lib-soft/jdbc" includes="postgresql-42.2.20.jar"/>
       </library>
   
-    <dataSource id="DefaultDataSource">
+    <dataSource id="DefaultDataSource" jndiName="jdbc/DataSource">
       <jdbcDriver libraryRef="jdbcLib"/>
       <properties serverName="localhost" 
                   portNumber="15432"

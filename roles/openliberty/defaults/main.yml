@@ -1,7 +1,7 @@
 ---
 # defaults file for openliberty
-openliberty_release: "2021-03-09_1101"
-openliberty_version: "21.0.0.3"
-openliberty_checksum: "sha512:e6f587ab53b79f0b99cc2a758bb8910198eaa0721fa79a168bf2e415c841a7e691e005220a15ee04332eb1de8390491a0d82f5355f089ab7d3caddc13704167f"
+openliberty_release: "2021-05-10_1231"
+openliberty_version: "21.0.0.5"
+openliberty_checksum: "sha512:1cae98d31af061d92303f0ef2e0dccf89878e1dd3ed6da0bf7e5a29054773e65db7d7898f238e34574e36a4490696ccf68643f95430b13b8e8a614aa88b3aa39"
 jee_runtimes_home: "{{ ansible_env.HOME }}/jee-runtimes"
 openliberty_home: "{{ jee_runtimes_home }}/openliberty"
